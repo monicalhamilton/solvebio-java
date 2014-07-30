@@ -18,5 +18,5 @@ Candidates must:
 ### Bonus
 
 1. complete all **BONUS**'es.
-2. increase portability by refactoring com.solvebio.SolveBioClient use configurable environment variables instead of static class members.
+2. increase portability by refactoring com.solvebio.SolveBioClient to use configurable environment variables instead of static class members.
 3. improve general code structure
