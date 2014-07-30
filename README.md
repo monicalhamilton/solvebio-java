@@ -1,7 +1,7 @@
 ## SolveBio Java Client -- Test
 
 ### Overview
-The goal of this project is to develop a simple Java client for the SolveBio REST API. To install, clone the repo locally and import it into as a Maven project using your favorite Java IDE.
+The goal of this project is to develop a simple Java client for the SolveBio REST API. To install, clone the repo locally and import it as a Maven project using your favorite Java IDE.
 
 Documentation for the API can be found here: https://www.solvebio.com/docs/api/. You may find the Data Layout section particularly useful.
 
