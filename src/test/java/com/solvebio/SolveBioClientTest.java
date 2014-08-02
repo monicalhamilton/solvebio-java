@@ -7,6 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +17,7 @@ import com.solvebio.exception.AuthenticationException;
 import com.solvebio.exception.InvalidRequestException;
 import com.solvebio.model.Depository;
 import com.solvebio.model.DepositoryVersion;
+import com.solvebio.net.APIResource;
 
 public class SolveBioClientTest {
 	private SolveBioClient client;
@@ -24,7 +27,21 @@ public class SolveBioClientTest {
 		client = new SolveBioClient();
 	}
 
-	// TODO: add a test for com.solvebio.net.APIResource.camelCaseToUnderscoreCase
+	@Test
+	public void testCamelCaseToUnderscoreSingleWord() {
+		String input = "Hello";
+		String expectedOutput = "hello";
+		String actualOutput = APIResource.camelCaseToUnderscoreCase(input);
+		Assert.assertEquals(expectedOutput, actualOutput);
+	}
+
+	@Test
+	public void testCamelCaseToUnderscoreTwoWords() {
+		String input = "HelloWorld";
+		String expectedOutput = "hello_world";
+		String actualOutput = APIResource.camelCaseToUnderscoreCase(input);
+		Assert.assertEquals(expectedOutput, actualOutput);
+	}
 
 	@Test
 	public void testAuth() throws APIException {
