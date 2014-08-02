@@ -2,6 +2,7 @@ package com.solvebio.model;
 
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
 import com.solvebio.exception.APIConnectionException;
 import com.solvebio.exception.APIException;
 import com.solvebio.exception.AuthenticationException;
@@ -9,8 +10,39 @@ import com.solvebio.exception.InvalidRequestException;
 import com.solvebio.net.CollectionResource;
 
 public class DepositoryVersion extends SolveBioModel {
-	// TODO: add missing field and getters/setters: name
-	// ** BONUS ** add all missing fields and corresponding getters/setters
+
+	@SerializedName("dataset_url")
+	private String datasetsUrl;
+
+	@SerializedName("depository")
+	private String depository;
+
+	@SerializedName("depository_id")
+	private int depositoryId;
+	
+	public String getDatasetsUrl() {
+		return datasetsUrl;
+	}
+
+	public void setDatasetsUrl(String datasetsUrl) {
+		this.datasetsUrl = datasetsUrl;
+	}
+
+	public String getDepository() {
+		return depository;
+	}
+
+	public void setDepository(String depository) {
+		this.depository = depository;
+	}
+
+	public int getDepositoryId() {
+		return depositoryId;
+	}
+
+	public void setDepositoryId(int depositoryId) {
+		this.depositoryId = depositoryId;
+	}
 
 	/**
 	 * Retrieve the list of DepositoryVersions available within a Depository.
