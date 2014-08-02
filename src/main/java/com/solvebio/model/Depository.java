@@ -2,6 +2,8 @@ package com.solvebio.model;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.google.gson.annotations.SerializedName;
 import com.solvebio.exception.APIConnectionException;
 import com.solvebio.exception.APIException;
 import com.solvebio.exception.AuthenticationException;
@@ -9,25 +11,60 @@ import com.solvebio.exception.InvalidRequestException;
 import com.solvebio.net.CollectionResource;
 
 public class Depository extends SolveBioModel {
-	// TODO:
-	// ** BONUS ** add all missing fields and corresponding getters/setters
-	private String name;
-	private String description;
 
-	public String getName() {
-		return name;
+	@SerializedName("versions_count")
+	private int versionsCount;
+
+	@SerializedName("external_url")
+	private String externalUrl;
+
+	@SerializedName("versions_url")
+	private String versionsUrl;
+
+	@SerializedName("latest_version")
+	private String latestVersion;
+
+	@SerializedName("latest_version_id")
+	private String latestVersionId;
+	
+	public int getVersionsCount() {
+		return versionsCount;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setVersionsCount(int versionsCount) {
+		this.versionsCount = versionsCount;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getExternalUrl() {
+		return externalUrl;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setExternalUrl(String externalUrl) {
+		this.externalUrl = externalUrl;
+	}
+
+	public String getVersionsUrl() {
+		return versionsUrl;
+	}
+
+	public void setVersionsUrl(String versionsUrl) {
+		this.versionsUrl = versionsUrl;
+	}
+
+	public String getLatestVersion() {
+		return latestVersion;
+	}
+
+	public void setLatestVersion(String latestVersion) {
+		this.latestVersion = latestVersion;
+	}
+
+	public String getLatestVersionId() {
+		return latestVersionId;
+	}
+
+	public void setLatestVersionId(String latestVersionId) {
+		this.latestVersionId = latestVersionId;
 	}
 
 	/**
@@ -78,7 +115,14 @@ public class Depository extends SolveBioModel {
 	 */
 	public List<DepositoryVersion> getDepositoryVersions(String apiKey) throws AuthenticationException,
 			InvalidRequestException, APIConnectionException, APIException {
-		throw new UnsupportedOperationException("implement me.");
+		// TODO test
+		List<DepositoryVersion> allDepositoryVersions = Lists.newLinkedList();
+		List<Depository> depositories = list(apiKey);
+		for (Depository depository : depositories) {
+			List<DepositoryVersion> versions = depository.getDepositoryVersions(apiKey);
+			allDepositoryVersions.addAll(versions);
+		}
+		return allDepositoryVersions;
 	}
 
 	public class DepositoryCollection extends CollectionResource<Depository> {
