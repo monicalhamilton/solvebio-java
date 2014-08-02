@@ -30,11 +30,13 @@ public abstract class APIResource extends ObjectResource {
 		StringBuilder translation = new StringBuilder();
 		for (int i = 0; i < name.length(); i++) {
 			char character = name.charAt(i);
-			if (Character.isUpperCase(character) && translation.length() == 0) {
+			// Upper case characters need an underscore before them, unless it's the first
+			if (Character.isUpperCase(character) && translation.length() != 0) {
 				translation.append("_");
 			}
 			translation.append(character);
 		}
+		// Make all lowercase
 		return translation.toString().toLowerCase();
 	}
 
