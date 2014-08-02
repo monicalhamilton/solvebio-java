@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.solvebio.exception.APIException;
-import com.solvebio.exception.AuthenticationException;
 import com.solvebio.exception.InvalidRequestException;
 import com.solvebio.model.Depository;
 import com.solvebio.model.DepositoryVersion;
@@ -43,14 +42,10 @@ public class SolveBioClientTest {
 		Assert.assertEquals(expectedOutput, actualOutput);
 	}
 
-	@Test
+	@Test(expected = APIException.class)
 	public void testAuth() throws APIException {
 		client.setAPIKey("abc123invalidAPIKey");
-		try {
-			client.getDepositoryVersions("ClinVar");
-			fail("AuthenticationException not thrown.");
-		} catch (AuthenticationException e) {
-		}
+		client.getDepositoryVersions("ClinVar");
 	}
 
 	@Test
@@ -77,10 +72,9 @@ public class SolveBioClientTest {
 	@Test
 	public void testDepositoryVersionRetrieve() throws APIException {
 		// ClinVar, 2.0.0-1
-		DepositoryVersion version = client.getDepositoryVersion("clinvar", "2.0.0-1");
-		// TODO: uncomment when implemented
-		// assertEquals(version.getName(), "2.0.0-1");
-		fail();
+		DepositoryVersion version = client.getDepositoryVersion("clinvar",
+				"2.0.0-1");
+		assertEquals(version.getName(), "2.0.0-1");
 	}
 
 	@Test
