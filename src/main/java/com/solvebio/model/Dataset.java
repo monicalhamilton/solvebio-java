@@ -2,6 +2,7 @@ package com.solvebio.model;
 
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
 import com.solvebio.exception.APIConnectionException;
 import com.solvebio.exception.APIException;
 import com.solvebio.exception.AuthenticationException;
@@ -9,8 +10,72 @@ import com.solvebio.exception.InvalidRequestException;
 import com.solvebio.net.CollectionResource;
 
 public class Dataset extends SolveBioModel {
-	// TODO: add missing field and getters/setters: name
-	// ** BONUS ** add all missing fields and corresponding getters/setters
+	
+	@SerializedName("depository")
+	private String depository;
+	
+	@SerializedName("depository_id")
+	private int depositoryId;
+	
+	@SerializedName("depository_id")
+	private String depositoryVersion;
+	
+	@SerializedName("depository_version_id")
+	private int depositoryVersionId;
+
+	@SerializedName("fields_url")
+	private int fieldsUrl;
+
+	@SerializedName("data_url")
+	private String dataUrl;
+	
+	public String getDepository() {
+		return depository;
+	}
+
+	public void setDepository(String depository) {
+		this.depository = depository;
+	}
+
+	public int getDepositoryId() {
+		return depositoryId;
+	}
+
+	public void setDepositoryId(int depositoryId) {
+		this.depositoryId = depositoryId;
+	}
+
+	public String getDepositoryVersion() {
+		return depositoryVersion;
+	}
+
+	public void setDepositoryVersion(String depositoryVersion) {
+		this.depositoryVersion = depositoryVersion;
+	}
+
+	public int getDepositoryVersionId() {
+		return depositoryVersionId;
+	}
+
+	public void setDepositoryVersionId(int depositoryVersionId) {
+		this.depositoryVersionId = depositoryVersionId;
+	}
+
+	public int getFieldsUrl() {
+		return fieldsUrl;
+	}
+
+	public void setFieldsUrl(int fieldsUrl) {
+		this.fieldsUrl = fieldsUrl;
+	}
+
+	public String getDataUrl() {
+		return dataUrl;
+	}
+
+	public void setDataUrl(String dataUrl) {
+		this.dataUrl = dataUrl;
+	}
 
 	/**
 	 * Retrieve the list of Datasets available within a DatasetVersion.
