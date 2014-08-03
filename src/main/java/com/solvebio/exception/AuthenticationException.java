@@ -2,7 +2,7 @@ package com.solvebio.exception;
 
 public class AuthenticationException extends APIException {
 
-	public AuthenticationException(String message) {
+	public AuthenticationException(String message, int code) {
 		super(message);
 	}
 

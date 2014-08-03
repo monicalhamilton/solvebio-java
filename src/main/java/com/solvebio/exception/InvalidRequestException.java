@@ -7,4 +7,8 @@ public class InvalidRequestException extends APIException {
 	public InvalidRequestException(String message, Throwable e) {
 		super(message, e);
 	}
+	
+	public InvalidRequestException(String message, int code, Throwable e) {
+		super(message, code, e);
+	}
 }

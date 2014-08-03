@@ -10,6 +10,14 @@ public class APIException extends Exception {
 		super(message, e);
 	}
 
+	public APIException(String message, int code, Throwable e) {
+		super(getMessage(message, code), e);
+	}
+	
+	private static String getMessage(String message, int code) {
+		return String.format("%s: %s", code, message);
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }
