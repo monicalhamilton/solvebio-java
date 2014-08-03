@@ -73,25 +73,17 @@ public class SolveBioClient {
 	// ----------------------------------------
 	// Datasets
 	// ----------------------------------------
-	// TODO
 	public List<Dataset> getDatasets(String versionId) throws AuthenticationException, InvalidRequestException,
 			APIConnectionException, APIException {
-		throw new UnsupportedOperationException("implement me.");
+		return Dataset.listForDepositoryVersion(apiKey, versionId);
 	}
 
-	// TODO
-	public Dataset getDataset(String depositoryName, String versionId) throws AuthenticationException,
+	public Dataset getDataset(String depositoryName, String versionId, String datasetName) throws AuthenticationException,
 			InvalidRequestException, APIConnectionException, APIException {
-		throw new UnsupportedOperationException("implement me.");
+		// Looks like you need to have a datasetName argument in order to find a unique dataset
+		// Otherwise, you'd be returning a list of datasets
+		// TODO test
+		return Dataset.retrieve(apiKey, depositoryName, versionId, datasetName);
 	}
 	
-	public static void main(final String[] args_) throws AuthenticationException, InvalidRequestException, APIConnectionException, APIException {
-		SolveBioClient client = new SolveBioClient();
-		List<Depository> depositories  = client.getDepositories();
-		
-		for (Depository depo : depositories) {
-			System.out.println("depo: " + depo);
-		}
-		
-	}
 }
