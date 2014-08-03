@@ -116,11 +116,10 @@ public class Dataset extends SolveBioModel {
 			throws AuthenticationException, InvalidRequestException,
 			APIConnectionException, APIException {
 		return request(RequestMethod.GET,
-				instanceURL(Depository.class, datasetId), null, Dataset.class,
+				instanceURL(Dataset.class, datasetId), null, Dataset.class,
 				apiKey);
 	}
 
-	// TODO
 	/**
 	 * Returns a Dataset by full path.
 	 * <p>
