@@ -93,6 +93,13 @@ public class SolveBioClientTest {
 
 		List<Dataset> datasets = client.getDatasets("ClinVar/2.0.0-1");
 		Assert.assertTrue(datasets.size() > 0);
+	}
 
+
+	@Test
+	public void testGetDataset() throws APIException {
+
+		Dataset dataset = client.getDataset("ClinVar", "2.0.0-1", "Variants");
+		Assert.assertTrue(dataset != null);
 	}
 }
