@@ -14,9 +14,8 @@ public class SolveBioClient {
 	public static final String API_HOST = "https://api.solvebio.com";
 	public static final String API_VERSION = "v1";
 
-	// TODO: this should be an ENV variable
-	 public static final String API_KEY = "YOUR API KEY GOES HERE!";
-
+	private static final String API_KEY = System.getProperty("apiKey");
+	
 	private String apiKey;
 
 	public SolveBioClient() {
@@ -60,10 +59,10 @@ public class SolveBioClient {
 		return DepositoryVersion.listForDepository(apiKey, depositoryName);
 	}
 
-	// TODO
 	public List<DepositoryVersion> getDepositoryVersions(Depository depo) throws AuthenticationException,
 			InvalidRequestException, APIConnectionException, APIException {
-		throw new UnsupportedOperationException("implement me.");
+		// TODO test
+		return depo.getDepositoryVersions(apiKey);
 	}
 
 	public DepositoryVersion getDepositoryVersion(String depositoryName, String versionId)
@@ -84,5 +83,15 @@ public class SolveBioClient {
 	public Dataset getDataset(String depositoryName, String versionId) throws AuthenticationException,
 			InvalidRequestException, APIConnectionException, APIException {
 		throw new UnsupportedOperationException("implement me.");
+	}
+	
+	public static void main(final String[] args_) throws AuthenticationException, InvalidRequestException, APIConnectionException, APIException {
+		SolveBioClient client = new SolveBioClient();
+		List<Depository> depositories  = client.getDepositories();
+		
+		for (Depository depo : depositories) {
+			System.out.println("depo: " + depo);
+		}
+		
 	}
 }
