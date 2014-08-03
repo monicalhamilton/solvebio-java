@@ -10,16 +10,16 @@ import com.solvebio.exception.InvalidRequestException;
 import com.solvebio.net.CollectionResource;
 
 public class Dataset extends SolveBioModel {
-	
+
 	@SerializedName("depository")
 	private String depository;
-	
+
 	@SerializedName("depository_id")
 	private int depositoryId;
-	
+
 	@SerializedName("depository_id")
 	private String depositoryVersion;
-	
+
 	@SerializedName("depository_version_id")
 	private int depositoryVersionId;
 
@@ -28,7 +28,7 @@ public class Dataset extends SolveBioModel {
 
 	@SerializedName("data_url")
 	private String dataUrl;
-	
+
 	public String getDepository() {
 		return depository;
 	}
@@ -78,7 +78,7 @@ public class Dataset extends SolveBioModel {
 	}
 
 	/**
-	 * Retrieve the list of Datasets available within a DatasetVersion.
+	 * Retrieve the list of Datasets available within a DepositoryVersion.
 	 * 
 	 * @param apiKey
 	 * @param versionId
@@ -88,12 +88,13 @@ public class Dataset extends SolveBioModel {
 	 * @throws APIConnectionException
 	 * @throws APIException
 	 */
-	public static List<Dataset> listForDepositoryVersion(String apiKey, String versionId)
-			throws AuthenticationException, InvalidRequestException, APIConnectionException, APIException {
-		throw new UnsupportedOperationException("I'm not implemented...yet...");
+	public static List<Dataset> listForDepositoryVersion(String apiKey,
+			String versionId) throws AuthenticationException,
+			InvalidRequestException, APIConnectionException, APIException {
+		return request(RequestMethod.GET, classURL(Dataset.class), null,
+				DatasetCollection.class, apiKey).getData();
 	}
 
-	// TODO
 	/**
 	 * Retrieve a Dataset with a given id.
 	 * <p>
@@ -108,22 +109,29 @@ public class Dataset extends SolveBioModel {
 	 * @throws APIConnectionException
 	 * @throws APIException
 	 */
-	public static DepositoryVersion retrieve(String apiKey, String datasetId) throws AuthenticationException,
-			InvalidRequestException, APIConnectionException, APIException {
-		throw new UnsupportedOperationException("implement me.");
+	// I think this is meant to be Dataset... not DepositoryVersion
+	public static Dataset retrieve(String apiKey, String datasetId)
+			throws AuthenticationException, InvalidRequestException,
+			APIConnectionException, APIException {
+		return request(RequestMethod.GET,
+				instanceURL(Depository.class, datasetId), null, Dataset.class,
+				apiKey);
 	}
 
 	// TODO
 	/**
 	 * Returns a Dataset by full path.
 	 * <p>
-	 * GET <i>https://SOLVEBIO_API_HOST/datasets/:depository_name/:version_name/:dataset_name</i>
+	 * GET
+	 * <i>https://SOLVEBIO_API_HOST/datasets/:depository_name/:version_name/:
+	 * dataset_name</i>
 	 * 
 	 * @param apiKey
 	 * @param depositoryName
 	 *            The parent Depository name.
 	 * @param versionName
-	 *            The parent DepositoryVersion semantic-version name (this is not globally unique).
+	 *            The parent DepositoryVersion semantic-version name (this is
+	 *            not globally unique).
 	 * @param datasetName
 	 *            The Dataset name (this may not be globally unique).
 	 * @return Dataset
@@ -132,11 +140,17 @@ public class Dataset extends SolveBioModel {
 	 * @throws APIConnectionException
 	 * @throws APIException
 	 */
-	public static Dataset retrieve(String apiKey, String depositoryName, String versionName, String datasetName)
-			throws AuthenticationException, InvalidRequestException, APIConnectionException, APIException {
-		throw new UnsupportedOperationException("implement me.");
+	public static Dataset retrieve(String apiKey, String depositoryName,
+			String versionName, String datasetName)
+			throws AuthenticationException, InvalidRequestException,
+			APIConnectionException, APIException {
+		return request(
+				RequestMethod.GET,
+				instanceURL(Dataset.class,
+						String.format("%s/%s", depositoryName, versionName)),
+				null, Dataset.class, apiKey);
 	}
 
-	public class DatasetVersionCollection extends CollectionResource<Dataset> {
+	public class DatasetCollection extends CollectionResource<Dataset> {
 	}
 }
