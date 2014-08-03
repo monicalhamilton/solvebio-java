@@ -148,8 +148,8 @@ public class Dataset extends SolveBioModel {
 			APIConnectionException, APIException {
 		return request(
 				RequestMethod.GET,
-				instanceURL(Dataset.class,
-						String.format("%s/%s", depositoryName, versionName)),
+				nestedURL(Dataset.class,
+						String.format("%s/%s", depositoryName, versionName), datasetName),
 				null, Dataset.class, apiKey);
 	}
 
