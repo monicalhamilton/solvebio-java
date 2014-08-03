@@ -11,10 +11,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.solvebio.SolveBioClient;
 import com.solvebio.exception.APIConnectionException;
 import com.solvebio.exception.APIException;
@@ -44,21 +50,21 @@ public abstract class APIResource extends ObjectResource {
 		return translation.toString().toLowerCase();
 	}
 
-	private static String className(Class<? extends APIResource> clazz) {
+	private static String singleClassName(Class<? extends APIResource> clazz) {
 		return camelCaseToUnderscoreCase(clazz.getSimpleName()
 				.replace("$", " "));
 	}
 
-	protected static String singleClassURL(Class<? extends APIResource> clazz) {
-		return String.format("%s/%s/%s", SolveBioClient.API_HOST,
-				SolveBioClient.API_VERSION, className(clazz));
+	private static String pluralClassName(Class<? extends APIResource> clazz) {
+		// add support for proper pluralization of classes that end in "y", such
+		// as com.solvebio.model.Depository
+		return String.format("%ss", singleClassName(clazz)).replaceFirst("ys$",
+				"ies");
 	}
 
 	protected static String classURL(Class<? extends APIResource> clazz) {
-		// add support for proper pluralization of classes that end in "y", such
-		// as com.solvebio.model.Depository
-		return String.format("%ss", singleClassURL(clazz)).replaceFirst("ys$",
-				"ies");
+		return String.format("%s/%s/%s", SolveBioClient.API_HOST,
+				SolveBioClient.API_VERSION, pluralClassName(clazz));
 	}
 
 	protected static String instanceURL(Class<? extends APIResource> clazz,
@@ -69,6 +75,11 @@ public abstract class APIResource extends ObjectResource {
 	protected static String nestedURL(Class<? extends APIResource> clazz,
 			String id, String path) throws InvalidRequestException {
 		return String.format("%s/%s/%s", classURL(clazz), id, path);
+	}
+
+	protected static String nestedURL(Class<? extends APIResource> clazz,
+			String id, Class<? extends APIResource> pathClazz) throws InvalidRequestException {
+		return String.format("%s/%s/%s", classURL(clazz), id, pluralClassName(pathClazz));
 	}
 
 	public static final String CHARSET = "UTF-8";
@@ -268,10 +279,11 @@ public abstract class APIResource extends ObjectResource {
 			Map<String, Object> params, Class<T> clazz, String apiKey)
 			throws AuthenticationException, InvalidRequestException,
 			APIConnectionException, APIException {
+		System.out.println(String.format("Going to query url %s.", url));
 		String query;
 
 		try {
-			query = createQuery(apiKey, params);  
+			query = createQuery(apiKey, params);
 		} catch (UnsupportedEncodingException e) {
 			throw new InvalidRequestException("Unable to encode parameters to "
 					+ CHARSET, e);
@@ -292,18 +304,40 @@ public abstract class APIResource extends ObjectResource {
 	private static void handleAPIError(String rBody, int rCode)
 			throws InvalidRequestException, AuthenticationException,
 			APIException {
-		Error error = GSON.fromJson(rBody, APIResource.Error.class);
+		// Some error responses do not come back as Json...
+		// For example "The requested URL /v1/depository_versions/2.0.0-1 was
+		// not found on this server." came back as html...
+
+		// I assume this is breaking the contract of what solvebio agreed to
+		// send (json), but for now I'll try to parse the html
+		String errorDetail = "";
+		try {
+			Error error = GSON.fromJson(rBody, APIResource.Error.class);
+			errorDetail = error.detail;
+		} catch (JsonSyntaxException e) {
+			// If not json, try html
+			Document doc = Jsoup.parse(rBody);
+			Element body = doc.body();
+			Elements paragraphs = body.getElementsByTag("p");
+			if (paragraphs.size() == 1) {
+				// Likely the error detail is in the first paragraph
+				// This is a hack, but since I don't know the actual error
+				// contract, this is a temporary workaround.
+				Element paragraph = paragraphs.iterator().next();
+				errorDetail = paragraph.childNode(0).toString();
+			}
+		}
 		switch (rCode) {
 		case 400:
-			throw new InvalidRequestException(error.detail, null);
+			throw new InvalidRequestException(errorDetail, rCode, null);
 		case 401:
-			throw new AuthenticationException(error.detail);
+			throw new AuthenticationException(errorDetail, rCode);
 		case 404:
-			throw new InvalidRequestException(error.detail, null);
+			throw new InvalidRequestException(errorDetail, rCode, null);
 		case 501:
-			throw new AuthenticationException(error.detail + "\n" + rCode);
+			throw new AuthenticationException(errorDetail, rCode);
 		case 403:
-			throw new AuthenticationException(error.detail);
+			throw new AuthenticationException(errorDetail, rCode);
 		}
 	}
 }
