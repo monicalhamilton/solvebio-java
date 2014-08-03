@@ -2,7 +2,6 @@ package com.solvebio.model;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 import com.solvebio.exception.APIConnectionException;
 import com.solvebio.exception.APIException;
