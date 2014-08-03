@@ -82,7 +82,6 @@ public class SolveBioClient {
 			InvalidRequestException, APIConnectionException, APIException {
 		// Looks like you need to have a datasetName argument in order to find a unique dataset
 		// Otherwise, you'd be returning a list of datasets
-		// TODO test
 		return Dataset.retrieve(apiKey, depositoryName, versionId, datasetName);
 	}
 	
