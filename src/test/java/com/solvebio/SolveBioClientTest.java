@@ -84,6 +84,6 @@ public class SolveBioClientTest {
 
 		// get Depository first, then get DepositoryVerions
 		Depository depo = client.getDepository("clinvar");
-		// assertNotNull(client.getDepositoryVersions(depo));
+		assertNotNull(client.getDepositoryVersions(depo));
 	}
 }
