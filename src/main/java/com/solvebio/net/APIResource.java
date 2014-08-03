@@ -78,8 +78,10 @@ public abstract class APIResource extends ObjectResource {
 	}
 
 	protected static String nestedURL(Class<? extends APIResource> clazz,
-			String id, Class<? extends APIResource> pathClazz) throws InvalidRequestException {
-		return String.format("%s/%s/%s", classURL(clazz), id, pluralClassName(pathClazz));
+			String id, Class<? extends APIResource> pathClazz)
+			throws InvalidRequestException {
+		return String.format("%s/%s/%s", classURL(clazz), id,
+				pluralClassName(pathClazz));
 	}
 
 	public static final String CHARSET = "UTF-8";
@@ -299,8 +301,6 @@ public abstract class APIResource extends ObjectResource {
 		return GSON.fromJson(rBody, clazz);
 	}
 
-	// TODO: add default case for status codes not explicitly handled?
-	// TODO: add response codes to error messages
 	private static void handleAPIError(String rBody, int rCode)
 			throws InvalidRequestException, AuthenticationException,
 			APIException {
@@ -338,6 +338,8 @@ public abstract class APIResource extends ObjectResource {
 			throw new AuthenticationException(errorDetail, rCode);
 		case 403:
 			throw new AuthenticationException(errorDetail, rCode);
+		default:
+			throw new APIException(errorDetail, rCode, null);
 		}
 	}
 }

@@ -10,6 +10,10 @@ public class APIException extends Exception {
 		super(message, e);
 	}
 
+	public APIException(String message, int code) {
+		this(message, code, null);
+	}
+
 	public APIException(String message, int code, Throwable e) {
 		super(getMessage(message, code), e);
 	}
