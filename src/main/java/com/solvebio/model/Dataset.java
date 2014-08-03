@@ -17,14 +17,15 @@ public class Dataset extends SolveBioModel {
 	@SerializedName("depository_id")
 	private int depositoryId;
 
-	@SerializedName("depository_id")
+	@SerializedName("depository_version")
 	private String depositoryVersion;
 
 	@SerializedName("depository_version_id")
 	private int depositoryVersionId;
 
+	// The solvebio api docs incorrectly mark this as int
 	@SerializedName("fields_url")
-	private int fieldsUrl;
+	private String fieldsUrl;
 
 	@SerializedName("data_url")
 	private String dataUrl;
@@ -61,11 +62,11 @@ public class Dataset extends SolveBioModel {
 		this.depositoryVersionId = depositoryVersionId;
 	}
 
-	public int getFieldsUrl() {
+	public String getFieldsUrl() {
 		return fieldsUrl;
 	}
 
-	public void setFieldsUrl(int fieldsUrl) {
+	public void setFieldsUrl(String fieldsUrl) {
 		this.fieldsUrl = fieldsUrl;
 	}
 
@@ -91,8 +92,9 @@ public class Dataset extends SolveBioModel {
 	public static List<Dataset> listForDepositoryVersion(String apiKey,
 			String versionId) throws AuthenticationException,
 			InvalidRequestException, APIConnectionException, APIException {
-		return request(RequestMethod.GET, classURL(Dataset.class), null,
-				DatasetCollection.class, apiKey).getData();
+		return request(RequestMethod.GET,
+				nestedURL(DepositoryVersion.class, versionId, Dataset.class),
+				null, DatasetCollection.class, apiKey).getData();
 	}
 
 	/**
