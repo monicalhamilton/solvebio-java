@@ -115,14 +115,7 @@ public class Depository extends SolveBioModel {
 	 */
 	public List<DepositoryVersion> getDepositoryVersions(String apiKey) throws AuthenticationException,
 			InvalidRequestException, APIConnectionException, APIException {
-		// TODO test
-		List<DepositoryVersion> allDepositoryVersions = Lists.newLinkedList();
-		List<Depository> depositories = list(apiKey);
-		for (Depository depository : depositories) {
-			List<DepositoryVersion> versions = depository.getDepositoryVersions(apiKey);
-			allDepositoryVersions.addAll(versions);
-		}
-		return allDepositoryVersions;
+		return DepositoryVersion.listForDepository(apiKey, getName());
 	}
 
 	public class DepositoryCollection extends CollectionResource<Depository> {
