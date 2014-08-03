@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.solvebio.exception.APIException;
 import com.solvebio.exception.InvalidRequestException;
+import com.solvebio.model.Dataset;
 import com.solvebio.model.Depository;
 import com.solvebio.model.DepositoryVersion;
 import com.solvebio.net.APIResource;
@@ -65,7 +66,7 @@ public class SolveBioClientTest {
 			client.getDepository("clinvartoo");
 			fail("InvalidRequestException not thrown.");
 		} catch (InvalidRequestException e) {
-			assertEquals(e.getMessage().toLowerCase(), "not found");
+			assertTrue(e.getMessage().toLowerCase().endsWith("not found"));
 		}
 	}
 
@@ -85,5 +86,13 @@ public class SolveBioClientTest {
 		// get Depository first, then get DepositoryVerions
 		Depository depo = client.getDepository("clinvar");
 		assertNotNull(client.getDepositoryVersions(depo));
+	}
+
+	@Test
+	public void testGetDatasets() throws APIException {
+
+		List<Dataset> datasets = client.getDatasets("ClinVar/2.0.0-1");
+		Assert.assertTrue(datasets.size() > 0);
+
 	}
 }
