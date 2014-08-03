@@ -50,13 +50,13 @@ public class SolveBioClientTest {
 	}
 
 	@Test
-	public void testDepositoryList() throws APIException {
+	public void testGetDepositories() throws APIException {
 		List<Depository> depos = client.getDepositories();
 		assertTrue(depos.size() > 0);
 	}
 
 	@Test
-	public void testDepositoryRetrieve() throws APIException {
+	public void testGetDepository() throws APIException {
 		// ClinVar
 		Depository depo = client.getDepository("clinvar");
 		assertEquals(depo.getName().toLowerCase(), "clinvar");
@@ -71,7 +71,7 @@ public class SolveBioClientTest {
 	}
 
 	@Test
-	public void testDepositoryVersionRetrieve() throws APIException {
+	public void testGetDepositoryVersion() throws APIException {
 		// ClinVar, 2.0.0-1
 		DepositoryVersion version = client.getDepositoryVersion("clinvar",
 				"2.0.0-1");
@@ -79,7 +79,14 @@ public class SolveBioClientTest {
 	}
 
 	@Test
-	public void testDepositoryVersionList() throws APIException {
+	public void testGetDepositoryVersionWithId() throws APIException {
+		// ClinVar, 2.0.0-1
+		DepositoryVersion version = client.getDepositoryVersion("15");
+		assertEquals(version.getName(), "2.0.0-1");
+	}
+
+	@Test
+	public void testGetDepositoryVersions() throws APIException {
 		// direct
 		assertNotNull(client.getDepositoryVersions("clinvar"));
 
@@ -100,6 +107,20 @@ public class SolveBioClientTest {
 	public void testGetDataset() throws APIException {
 
 		Dataset dataset = client.getDataset("ClinVar", "2.0.0-1", "Variants");
-		Assert.assertTrue(dataset != null);
+		Assert.assertEquals(dataset.getName(), "Variants");
+	}
+
+	@Test
+	public void testGetDatasetWithId() throws APIException {
+
+		Dataset dataset = client.getDataset("25");
+		Assert.assertEquals(dataset.getName(), "Variants");
+	}
+
+	@Test
+	public void testGetDatasetWithName() throws APIException {
+
+		Dataset dataset = client.getDataset("ClinVar/2.0.0-1/Variants");
+		Assert.assertEquals(dataset.getName(), "Variants");
 	}
 }
