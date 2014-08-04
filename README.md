@@ -1,3 +1,20 @@
+This are my improvements on a Java client for the SolveBio REST API. See below for original requirements.  
+
+I tackled the problem as follows:
+1. Read the solvebio API documentation and played around with the solvebio python API to understand the data model.
+2. Began retrieving data using the Java client, fixing immediate bugs as necessary (e.g. camelCaseToUnderscoreCase).
+3. Fleshed out the model classes with missing fields. 
+4. Implemented deserializations with gson annotations and custom deserializers.
+5. Implemented skeleton methods and added test cases.
+
+Some things that could be improved in the server-side API:
+1. Standardize the datetime fields returned (some fields included milliseconds; others did not).
+2. Standardize the error responses (most were JSON, but some were HTML).
+
+How to use:
+Add your API as an environment variable or pass to the JVM via -DapiKey.  
+
+The original spec was as follows:
 ## SolveBio Java Client -- Test
 
 ### Overview
